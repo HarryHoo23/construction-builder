@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "home": "首页",
+    "projects": "项目",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "cta": "开启您的项目",
+    "menu": "打开导航",
+    "close": "关闭导航"
+  },
+  "home": {
+    "eyebrow": "住宅建造 · 墨尔本",
+    "title": "为您的生活方式，精心打造理想之家。",
+    "intro": "我们规划并建造考量周全的住宅项目，从双拼住宅、联排别墅到定制住宅与精细翻新。",
+    "viewProjects": "浏览项目",
+    "talk": "联系我们",
+    "featured": "精选项目",
+    "featuredIntro": "遍布墨尔本，持续呈现兼具实用与恒久品质的住宅作品。",
+    "services": "我们的服务",
+    "servicesIntro": "从前期可行性分析、施工到交付，由经验丰富的团队全程负责。",
+    "aboutEyebrow": "周全的方法",
+    "aboutTitle": "清晰沟通，细致建造。",
+    "aboutBody": "每个项目都从场地、使用者与切实可行的路径出发，让设计意图、预算与施工性保持一致。",
+    "process": "建造流程",
+    "testimonials": "客户观点",
+    "areas": "服务墨尔本各区",
+    "finalTitle": "正在规划您的下一个住宅项目？",
+    "finalBody": "欢迎告诉我们您的场地、重点需求和当前阶段。"
+  },
+  "projects": {
+    "eyebrow": "项目作品",
+    "title": "为生活而建。",
+    "intro": "浏览我们在墨尔本已完成、在建及即将启动的住宅项目。",
+    "all": "全部项目",
+    "category": "类别",
+    "status": "状态",
+    "view": "查看项目",
+    "emptyTitle": "暂无项目",
+    "emptyBody": "在 Sanity Studio 发布的项目将显示在这里。",
+    "related": "相关项目",
+    "enquire": "咨询类似项目"
+  },
+  "services": {
+    "eyebrow": "服务",
+    "title": "从构想到交付的住宅建造专业服务。",
+    "intro": "为新建住宅、多户住宅开发与既有住宅改造提供灵活的建造方案。",
+    "emptyTitle": "服务内容正在准备中",
+    "emptyBody": "在 Sanity Studio 发布的服务将显示在这里。"
+  },
+  "about": {
+    "eyebrow": "关于我们",
+    "title": "值得信赖的墨尔本住宅建造伙伴。",
+    "intro": "我们将设计理解、务实施工经验和直接沟通融入每一个住宅项目。",
+    "principles": "我们的工作方式",
+    "principle1": "先倾听",
+    "principle1Body": "理解场地、需求与最重要的决策。",
+    "principle2": "清晰规划",
+    "principle2Body": "开工前明确范围、时间与各方责任。",
+    "principle3": "细致建造",
+    "principle3Body": "围绕品质、安全与设计成果协调每一个工种。"
+  },
+  "contact": {
+    "eyebrow": "联系我们",
+    "title": "让我们聊聊您的项目。",
+    "intro": "提供一些基本信息，我们将为务实高效的首次沟通做好准备。",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "phone": "电话",
+    "language": "首选语言",
+    "projectType": "项目类型",
+    "suburb": "项目所在区域",
+    "message": "留言",
+    "send": "发送咨询",
+    "notice": "在线提交功能即将上线。目前请通过电话或电子邮件直接联系我们。",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "footer": {
+    "description": "专注墨尔本住宅与多户住宅开发的用心建造。",
+    "contact": "联系方式",
+    "navigate": "导航",
+    "serviceAreas": "服务区域",
+    "rights": "保留所有权利。"
+  },
+  "common": {
+    "learnMore": "了解更多",
+    "comingSoon": "即将推出",
+    "underConstruction": "施工中",
+    "completed": "已完成",
+    "location": "地点",
+    "specifications": "项目详情",
+    "bedrooms": "卧室",
+    "bathrooms": "浴室",
+    "carSpaces": "车位",
+    "dwellings": "住宅数量",
+    "siteArea": "场地面积",
+    "listing": "查看房源"
+  }
+}

@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f1e8;
+  --surface: #fffdf8;
+  --foreground: #20211f;
+  --muted: #686a63;
+  --line: #d7d0c2;
+  --accent: #8a6b43;
+  --charcoal: #20211f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-charcoal: var(--charcoal);
+  --font-sans: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  --font-display: Iowan Old Style, Baskerville, "Times New Roman", serif;
+}
+
+* {
+  border-color: var(--line);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #d8c9b4;
+  color: var(--charcoal);
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  outline-offset: 4px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.architectural-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.architectural-visual {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(155deg, transparent 48%, rgba(26, 29, 27, 0.22) 49%),
+    linear-gradient(120deg, #9a9d90 0%, #c9c5b9 42%, #565a54 100%);
+}
+
+.architectural-visual::before {
+  content: "";
+  position: absolute;
+  inset: 31% 8% 7% 18%;
+  background:
+    linear-gradient(90deg, #332f2a 0 26%, transparent 26% 29%, #c4b79e 29% 67%, transparent 67% 71%, #2e332f 71%),
+    linear-gradient(#d7d0c0 0 45%, #a69b88 45%);
+  clip-path: polygon(7% 20%, 55% 0, 100% 16%, 100% 100%, 0 100%, 0 38%);
+  box-shadow: 0 30px 60px rgba(24, 25, 23, 0.32);
+}
+
+.architectural-visual::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -18% -8%;
+  height: 40%;
+  background: #5a6150;
+  transform: rotate(-4deg);
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal 700ms ease-out both;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

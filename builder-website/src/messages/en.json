@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Start your project",
+    "menu": "Open navigation",
+    "close": "Close navigation"
+  },
+  "home": {
+    "eyebrow": "Residential construction · Melbourne",
+    "title": "Homes shaped around the way you live.",
+    "intro": "We plan and build considered residential projects—from dual occupancies and townhouses to custom homes and sensitive renovations.",
+    "viewProjects": "Explore projects",
+    "talk": "Talk to our team",
+    "featured": "Selected projects",
+    "featuredIntro": "A growing portfolio of practical, enduring homes across Melbourne.",
+    "services": "What we build",
+    "servicesIntro": "One experienced team from early feasibility through construction and handover.",
+    "aboutEyebrow": "A considered approach",
+    "aboutTitle": "Clear communication. Careful construction.",
+    "aboutBody": "Every project begins with its site, its people and a realistic path forward. Our process keeps design intent, budget and buildability aligned.",
+    "process": "Our process",
+    "testimonials": "Client perspectives",
+    "areas": "Building across Melbourne",
+    "finalTitle": "Planning your next residential project?",
+    "finalBody": "Tell us about your site, your priorities and where you are in the process."
+  },
+  "projects": {
+    "eyebrow": "Project portfolio",
+    "title": "Built with purpose.",
+    "intro": "Completed, current and upcoming residential work across Melbourne.",
+    "all": "All projects",
+    "category": "Category",
+    "status": "Status",
+    "view": "View project",
+    "emptyTitle": "No projects to show yet",
+    "emptyBody": "Published projects from Sanity Studio will appear here.",
+    "related": "Related projects",
+    "enquire": "Discuss a similar project"
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Residential building expertise, end to end.",
+    "intro": "Flexible delivery for new homes, multi-dwelling developments and transformations of existing homes.",
+    "emptyTitle": "Services are being prepared",
+    "emptyBody": "Published services from Sanity Studio will appear here."
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "A thoughtful building partner for Melbourne homes.",
+    "intro": "We bring design awareness, practical construction knowledge and straightforward communication to every residential project.",
+    "principles": "How we work",
+    "principle1": "Listen first",
+    "principle1Body": "Understand the site, the brief and the decisions that matter most.",
+    "principle2": "Plan clearly",
+    "principle2Body": "Make scope, timing and responsibilities visible before construction begins.",
+    "principle3": "Build carefully",
+    "principle3Body": "Coordinate every trade around quality, safety and the finished design."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Start a conversation about your project.",
+    "intro": "Share a few details and we’ll be ready for a practical first discussion.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "language": "Preferred language",
+    "projectType": "Project type",
+    "suburb": "Project suburb",
+    "message": "Message",
+    "send": "Send enquiry",
+    "notice": "Online submission is coming soon. For now, contact us directly by phone or email.",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "footer": {
+    "description": "Considered residential construction for Melbourne homes and multi-dwelling developments.",
+    "contact": "Contact",
+    "navigate": "Navigate",
+    "serviceAreas": "Service areas",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "comingSoon": "Coming soon",
+    "underConstruction": "Under construction",
+    "completed": "Completed",
+    "location": "Location",
+    "specifications": "Project details",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "carSpaces": "Car spaces",
+    "dwellings": "Dwellings",
+    "siteArea": "Site area",
+    "listing": "View property listing"
+  }
+}
