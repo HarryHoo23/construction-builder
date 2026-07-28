@@ -14,9 +14,10 @@ export async function safeSanityFetch<T>({
   if (!isSanityConfigured) return fallback;
 
   try {
-    return await client.fetch<T>(query, params, {
+    const result = await client.fetch<T | null>(query, params, {
       next: { revalidate: 60 },
     });
+    return result ?? fallback;
   } catch {
     return fallback;
   }
