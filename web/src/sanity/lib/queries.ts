@@ -45,7 +45,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 `);
 
 export const FEATURED_PROJECTS_QUERY = defineQuery(`
-  *[_type == "project" && featured == true] | order(displayOrder asc, _createdAt desc)[0...3] {
+  *[_type == "project"] | order(featured desc, displayOrder asc, _createdAt desc)[0...3] {
     ${projectCardFields}
   }
 `);

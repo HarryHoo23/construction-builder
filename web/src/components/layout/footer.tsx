@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/container";
 import { Logo } from "./logo";
+import { BRAND_COPY, FOOTER_COPY } from "@/lib/copy";
 
 export function Footer({
   locale,
@@ -34,13 +35,16 @@ export function Footer({
   abn?: string;
 }) {
   return (
-    <footer className="bg-charcoal py-14 text-white sm:py-20">
+    <footer className="relative overflow-hidden bg-charcoal py-14 text-[#f3ede5] sm:py-20">
       <Container>
-        <div className="grid gap-12 border-b border-white/15 pb-14 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 border-b border-white/12 pb-14 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Logo companyName={companyName} />
-            <p className="mt-6 max-w-md text-sm leading-7 text-white/65">
+            <p className="mt-7 max-w-md text-sm leading-7 text-white/55">
               {labels.description}
+            </p>
+            <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.24em] text-brand-green">
+              {BRAND_COPY.cityState}
             </p>
           </div>
           <div>
@@ -48,11 +52,11 @@ export function Footer({
               {labels.navigate}
             </h2>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><Link href="/">{labels.home}</Link></li>
-              <li><Link href="/projects">{labels.projects}</Link></li>
-              <li><Link href="/services">{labels.services}</Link></li>
-              <li><Link href="/about">{labels.about}</Link></li>
-              <li><Link href="/contact">{labels.contactPage}</Link></li>
+              <li><Link className="transition-colors hover:text-brand-red" href="/">{labels.home}</Link></li>
+              <li><Link className="transition-colors hover:text-brand-red" href="/projects">{labels.projects}</Link></li>
+              <li><Link className="transition-colors hover:text-brand-red" href="/services">{labels.services}</Link></li>
+              <li><Link className="transition-colors hover:text-brand-red" href="/about">{labels.about}</Link></li>
+              <li><Link className="transition-colors hover:text-brand-red" href="/contact">{labels.contactPage}</Link></li>
             </ul>
           </div>
           <div>
@@ -74,7 +78,7 @@ export function Footer({
         <div className="flex flex-col gap-3 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {companyName}. {labels.rights}</p>
           <p>
-            {licence ? `${locale === "zh" ? "建筑商执照" : "Builder licence"}: ${licence}` : null}
+            {licence ? `${FOOTER_COPY.builderLicence[locale]}: ${licence}` : null}
             {licence && abn ? " · " : null}
             {abn ? `ABN: ${abn}` : null}
           </p>

@@ -9,6 +9,7 @@ import { fallbackProjects } from "@/sanity/lib/fallbacks";
 import { safeSanityFetch } from "@/sanity/lib/live";
 import { ALL_PROJECTS_QUERY } from "@/sanity/lib/queries";
 import type { ProjectSummary } from "@/sanity/types";
+import { getCopy, PAGE_METADATA_COPY } from "@/lib/copy";
 
 export async function generateMetadata({
   params,
@@ -16,14 +17,10 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "zh" ? "住宅项目" : "Residential Projects";
-  const description =
-    locale === "zh"
-      ? "浏览我们在墨尔本的住宅建造项目。"
-      : "Explore completed, current and upcoming residential building projects across Melbourne.";
+  const copy = getCopy(PAGE_METADATA_COPY.projects, locale);
   return {
-    title,
-    description,
+    title: copy.title,
+    description: copy.description,
     alternates: {
       canonical: `${SITE_URL}/${locale}/projects`,
       languages: {
@@ -49,12 +46,17 @@ export default async function ProjectsPage({
 
   return (
     <>
-      <section className="border-b border-line py-16 sm:py-24">
+      <section className="page-intro border-b border-line py-20 sm:py-28">
         <Container>
-          <SectionHeading eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
+          <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
+            <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
+            <p className="max-w-xl text-base leading-8 text-muted sm:text-lg">
+              {t("intro")}
+            </p>
+          </div>
         </Container>
       </section>
-      <section className="py-14 sm:py-20">
+      <section className="bg-background py-14 sm:py-20">
         <Container>
           <ProjectFilters
             projects={projects}

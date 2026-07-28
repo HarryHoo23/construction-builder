@@ -1,4 +1,12 @@
-import { ArrowRight, Check, MapPin } from "lucide-react";
+import Image from "next/image";
+import {
+  ArrowRight,
+  Compass,
+  MapPin,
+  MessageSquareText,
+  Ruler,
+  ShieldCheck,
+} from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -6,15 +14,27 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProjectGrid } from "@/components/projects/project-grid";
 import { ServiceGrid } from "@/components/services/service-grid";
-import { fallbackProjects, fallbackServices, fallbackTestimonials } from "@/sanity/lib/fallbacks";
+import {
+  fallbackProjects,
+  fallbackServices,
+  fallbackSiteSettings,
+  fallbackTestimonials,
+} from "@/sanity/lib/fallbacks";
 import { safeSanityFetch } from "@/sanity/lib/live";
 import {
   ALL_SERVICES_QUERY,
   FEATURED_PROJECTS_QUERY,
   FEATURED_TESTIMONIALS_QUERY,
+  SITE_SETTINGS_QUERY,
 } from "@/sanity/lib/queries";
-import type { ProjectSummary, Service, Testimonial } from "@/sanity/types";
+import type {
+  ProjectSummary,
+  Service,
+  SiteSettings,
+  Testimonial,
+} from "@/sanity/types";
 import { getLocalizedValue } from "@/lib/localization";
+import { BRAND_COPY, getCopy, HOME_COPY } from "@/lib/copy";
 
 export default async function HomePage({
   params,
@@ -26,7 +46,7 @@ export default async function HomePage({
   const t = await getTranslations("home");
   const projectsT = await getTranslations("projects");
 
-  const [projects, services, testimonials] = await Promise.all([
+  const [projects, services, testimonials, settings] = await Promise.all([
     safeSanityFetch<ProjectSummary[]>({
       query: FEATURED_PROJECTS_QUERY,
       fallback: fallbackProjects,
@@ -39,65 +59,102 @@ export default async function HomePage({
       query: FEATURED_TESTIMONIALS_QUERY,
       fallback: fallbackTestimonials,
     }),
+    safeSanityFetch<SiteSettings>({
+      query: SITE_SETTINGS_QUERY,
+      fallback: fallbackSiteSettings,
+    }),
   ]);
 
-  const process =
-    locale === "zh"
-      ? [
-          ["01", "前期沟通", "明确场地条件、目标、预算框架与可行路径。"],
-          ["02", "规划与准备", "协调设计、报价、审批与施工前的关键决策。"],
-          ["03", "施工与交付", "以透明沟通管理进度、品质与最终交付。"],
-        ]
-      : [
-          ["01", "Discover", "Clarify the site, priorities, budget framework and a viable path forward."],
-          ["02", "Plan", "Coordinate design, pricing, approvals and the decisions required before site work."],
-          ["03", "Build", "Manage progress, quality and handover with clear communication throughout."],
-        ];
+  const displayServices = services.length ? services : fallbackServices;
+  const copy = getCopy(HOME_COPY, locale);
+  const serviceAreas =
+    settings.serviceAreas
+      ?.map((area) => getLocalizedValue(area, locale))
+      .filter((area): area is string => Boolean(area)) ?? [];
+
+  const whyIcons = [Ruler, MessageSquareText, ShieldCheck, Compass];
 
   return (
     <>
-      <section className="bg-charcoal text-white">
-        <Container className="grid min-h-[calc(100svh-73px)] items-stretch lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="flex flex-col justify-center py-16 pr-0 sm:py-24 lg:pr-14">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#c9ab83]">
-              {t("eyebrow")}
-            </p>
-            <h1 className="display reveal mt-7 max-w-3xl text-5xl leading-[0.98] sm:text-7xl lg:text-[5.5rem]">
-              {t("title")}
-            </h1>
-            <p className="mt-8 max-w-xl text-base leading-7 text-white/68 sm:text-lg">
-              {t("intro")}
-            </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/projects"
-                className="inline-flex min-h-13 items-center justify-center gap-3 bg-background px-6 text-xs font-semibold uppercase tracking-[0.18em] text-charcoal transition-colors hover:bg-[#d9cbb8]"
-              >
-                {t("viewProjects")} <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex min-h-13 items-center justify-center border border-white/30 px-6 text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:bg-white hover:text-charcoal"
-              >
-                {t("talk")}
-              </Link>
+      {/* Hero */}
+      <section className="bg-charcoal">
+        <div className="relative hidden h-[clamp(520px,64svh,660px)] w-full overflow-hidden md:block">
+          <Image
+            src="/images/hongwei-hero-clean.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_20%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/25 to-transparent" />
+          <Container className="relative z-10 flex h-full items-center text-[#f7f3ee]">
+            <div className="max-w-2xl pb-4">
+              <p className="display text-6xl leading-none tracking-[0.06em] lg:text-[5.6rem]">
+                {BRAND_COPY.wordmark}
+              </p>
+              <p className="mt-4 text-sm font-medium uppercase tracking-[0.42em] text-white/82 lg:text-base">
+                {BRAND_COPY.descriptor}
+              </p>
+              <span className="mt-9 block h-px w-14 bg-brand-red" />
+              <h1 className="display mt-9 text-5xl leading-[1.03] lg:text-[4.5rem]">
+                {t("title")}
+              </h1>
             </div>
+          </Container>
+        </div>
+        <div className="relative flex h-[580px] items-end overflow-hidden px-6 pb-12 pt-20 text-[#f7f3ee] sm:h-[620px] md:hidden">
+          <Image
+            src="/images/hongwei-hero-clean.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[72%_center]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5" />
+          <div className="relative z-10">
+            <p className="display text-3xl tracking-[0.14em]">{BRAND_COPY.wordmark}</p>
+            <p className="mt-2 text-[10px] uppercase tracking-[0.42em] text-white/75">
+              {BRAND_COPY.descriptor}
+            </p>
+            <span className="mt-8 block h-px w-12 bg-brand-red" />
+            <p className="display mt-7 max-w-sm text-5xl leading-[1.02]">{t("title")}</p>
           </div>
-          <div className="architectural-visual architectural-grid min-h-[52svh] lg:min-h-full">
-            <div className="absolute bottom-6 left-6 z-20 bg-charcoal/85 px-4 py-3 text-[10px] uppercase tracking-[0.18em] text-white/80">
-              Melbourne · Victoria
-            </div>
+        </div>
+        <Container className="flex flex-col gap-4 border-t border-white/10 py-5 text-[#f7f3ee] sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-white/55">
+            {t("eyebrow")}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/projects"
+              className="inline-flex min-h-11 items-center gap-3 border border-white/35 px-5 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors hover:border-white hover:bg-white hover:text-charcoal"
+            >
+              {t("viewProjects")} <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-11 items-center gap-3 bg-[#f7f3ee] px-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-charcoal transition-colors hover:bg-brand-red hover:text-white"
+            >
+              {t("talk")} <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
           </div>
         </Container>
       </section>
 
-      <section className="py-20 sm:py-28">
+      {/* Featured Projects */}
+      <section className="bg-background py-20 sm:py-28">
         <Container>
           <div className="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-            <SectionHeading title={t("featured")} intro={t("featuredIntro")} />
+            <SectionHeading
+              eyebrow={copy.projectPortfolioEyebrow}
+              title={t("featured")}
+              intro={t("featuredIntro")}
+            />
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em]"
+              className="inline-flex items-center gap-2 border-b border-charcoal/35 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors hover:border-brand-red hover:text-brand-red"
             >
               {t("viewProjects")} <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
@@ -106,110 +163,172 @@ export default async function HomePage({
         </Container>
       </section>
 
-      <section className="border-y border-line bg-[#eee8dc] py-20 sm:py-28">
+      {/* Services */}
+      <section className="brand-tint border-y border-line py-20 sm:py-28">
         <Container>
-          <SectionHeading title={t("services")} intro={t("servicesIntro")} />
+          <SectionHeading
+            eyebrow={copy.servicesEyebrow}
+            title={t("services")}
+            intro={t("servicesIntro")}
+          />
           <div className="mt-12">
-            <ServiceGrid services={services.slice(0, 3)} locale={locale} />
+            <ServiceGrid services={displayServices.slice(0, 3)} locale={locale} />
           </div>
         </Container>
       </section>
 
-      <section className="py-20 sm:py-32">
-        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="min-h-96 bg-[#cbc5b8] p-8 sm:p-12">
-            <div className="architectural-grid flex h-full items-end border border-charcoal/15 p-6">
-              <p className="max-w-xs text-xs uppercase leading-6 tracking-[0.2em] text-charcoal/70">
-                Site-aware design · Practical planning · Detailed construction
-              </p>
+      {/* Why Choose Us */}
+      <section className="bg-background py-20 sm:py-32">
+        <Container>
+          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <SectionHeading
+              eyebrow={t("whyEyebrow")}
+              title={t("whyTitle")}
+              intro={t("whyIntro")}
+              className="lg:sticky lg:top-32 lg:self-start"
+            />
+            <div className="grid border-l border-t border-line sm:grid-cols-2">
+              {copy.whyChooseUs.map(({ title, body }, index) => {
+                const Icon = whyIcons[index];
+                return (
+                  <article key={title} className="border-b border-r border-line bg-surface p-7 sm:p-9">
+                    <Icon className="size-6 text-brand-teal" strokeWidth={1.35} aria-hidden="true" />
+                    <p className="mt-12 text-[10px] tracking-[0.2em] text-taupe">0{index + 1}</p>
+                    <h3 className="display mt-4 text-3xl">{title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-muted">{body}</p>
+                  </article>
+                );
+              })}
             </div>
           </div>
-          <div className="flex flex-col justify-center">
+        </Container>
+      </section>
+
+      {/* Development Types */}
+      <section className="border-y border-line bg-stone/55 py-20 sm:py-28">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
             <SectionHeading
-              eyebrow={t("aboutEyebrow")}
-              title={t("aboutTitle")}
-              intro={t("aboutBody")}
+              eyebrow={t("developmentEyebrow")}
+              title={t("developmentTitle")}
+              intro={t("developmentIntro")}
             />
-            <ul className="mt-9 space-y-4 text-sm text-muted">
-              {(locale === "zh"
-                ? ["一站式项目协调", "清晰透明的沟通", "注重细节与长期品质"]
-                : ["Joined-up project coordination", "Clear, direct communication", "Detail and long-term quality"]
-              ).map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <Check className="size-4 text-accent" aria-hidden="true" /> {item}
-                </li>
+            <div className="border-t border-charcoal/25">
+              {copy.developmentTypes.map(({ number, title, body }, index) => (
+                <article
+                  key={title}
+                  className="group grid gap-5 border-b border-charcoal/18 py-7 sm:grid-cols-[56px_0.75fr_1.25fr] sm:items-start"
+                >
+                  <span
+                    className={`text-[10px] font-semibold tracking-[0.18em] ${
+                      index % 2 ? "text-brand-teal" : "text-brand-red"
+                    }`}
+                  >
+                    {number}
+                  </span>
+                  <h3 className="display text-2xl sm:text-3xl">{title}</h3>
+                  <p className="text-sm leading-7 text-muted">{body}</p>
+                </article>
               ))}
-            </ul>
-            <Link
-              href="/about"
-              className="mt-10 inline-flex items-center gap-2 self-start border-b border-charcoal pb-2 text-xs font-semibold uppercase tracking-[0.18em]"
-            >
-              {locale === "zh" ? "了解我们" : "About our approach"}
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-charcoal py-20 text-white sm:py-28">
+      {/* Our Process */}
+      <section className="process-section bg-charcoal py-20 text-[#f7f3ee] sm:py-28">
         <Container>
-          <SectionHeading title={t("process")} />
+          <SectionHeading
+            eyebrow={copy.processEyebrow}
+            title={t("process")}
+          />
           <div className="mt-14 grid border-l border-t border-white/15 md:grid-cols-3">
-            {process.map(([number, title, body]) => (
+            {copy.process.map(({ number, title, body }) => (
               <article key={number} className="border-b border-r border-white/15 p-7 sm:p-9">
-                <span className="text-xs tracking-[0.2em] text-[#c9ab83]">{number}</span>
+                <span className="text-xs font-semibold tracking-[0.2em] text-brand-green">{number}</span>
                 <h3 className="display mt-16 text-3xl">{title}</h3>
-                <p className="mt-4 text-sm leading-6 text-white/62">{body}</p>
+                <p className="mt-4 text-sm leading-7 text-white/58">{body}</p>
               </article>
             ))}
           </div>
         </Container>
       </section>
 
-      {testimonials.length ? (
-        <section className="py-20 sm:py-28">
-          <Container>
-            <SectionHeading title={t("testimonials")} />
+      {/* Testimonials */}
+      <section className="bg-background py-20 sm:py-28">
+        <Container>
+          <SectionHeading
+            eyebrow={copy.testimonialsEyebrow}
+            title={t("testimonials")}
+            intro={t("testimonialsIntro")}
+          />
+          {testimonials.length ? (
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               {testimonials.map((testimonial) => (
-                <blockquote key={testimonial._id} className="border border-line bg-surface p-7">
-                  <p className="display text-2xl leading-9">
-                    “{getLocalizedValue(testimonial.quote, locale)}”
+                <blockquote key={testimonial._id} className="premium-card p-7 sm:p-9">
+                  <span className="display text-5xl leading-none text-brand-red/55">“</span>
+                  <p className="display mt-3 text-2xl leading-9">
+                    {getLocalizedValue(testimonial.quote, locale)}
                   </p>
-                  <footer className="mt-7 text-xs uppercase tracking-[0.16em] text-muted">
+                  <footer className="mt-8 border-t border-line pt-5 text-[10px] uppercase tracking-[0.16em] text-muted">
                     {testimonial.clientName}
                     {testimonial.clientLocation ? ` · ${testimonial.clientLocation}` : ""}
                   </footer>
                 </blockquote>
               ))}
             </div>
-          </Container>
-        </section>
-      ) : null}
-
-      <section className="border-t border-line py-16">
-        <Container className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <MapPin className="mb-4 size-6 text-accent" aria-hidden="true" />
-            <h2 className="display text-3xl">{t("areas")}</h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-muted">
-            {locale === "zh"
-              ? "服务墨尔本东区、东南区及大墨尔本地区。具体服务范围请与我们确认。"
-              : "Serving Melbourne’s inner east, south east and greater metropolitan area. Contact us to discuss your location."}
-          </p>
+          ) : (
+            <div className="mt-12 border-y border-line py-10">
+              <p className="display max-w-4xl text-3xl leading-tight text-charcoal/78 sm:text-5xl">
+                {copy.emptyTestimonials}
+              </p>
+            </div>
+          )}
         </Container>
       </section>
 
-      <section className="bg-accent py-16 text-white sm:py-20">
-        <Container className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      {/* Service Areas */}
+      <section className="border-t border-line bg-stone/55 py-16 sm:py-20">
+        <Container className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
           <div>
-            <h2 className="display max-w-3xl text-4xl leading-tight sm:text-6xl">{t("finalTitle")}</h2>
-            <p className="mt-5 max-w-2xl text-white/75">{t("finalBody")}</p>
+            <MapPin className="mb-5 size-6 text-brand-teal" strokeWidth={1.4} aria-hidden="true" />
+            <p className="eyebrow">{copy.serviceAreasEyebrow}</p>
+            <h2 className="display mt-4 text-4xl sm:text-5xl">{t("areas")}</h2>
+          </div>
+          <div>
+            <p className="max-w-2xl text-sm leading-7 text-muted">
+              {copy.serviceAreasBody}
+            </p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {(serviceAreas.length
+                ? serviceAreas
+                : copy.defaultServiceAreas
+              ).map((area) => (
+                <span
+                  key={area}
+                  className="border border-charcoal/18 bg-background px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-charcoal/70"
+                >
+                  {area}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final Contact CTA */}
+      <section className="cta-section border-t border-line py-20 sm:py-24">
+        <Container className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="eyebrow">{copy.finalCtaEyebrow}</p>
+            <h2 className="display mt-5 max-w-4xl text-5xl leading-[1.02] sm:text-7xl">
+              {t("finalTitle")}
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-muted">{t("finalBody")}</p>
           </div>
           <Link
             href="/contact"
-            className="inline-flex min-h-13 shrink-0 items-center justify-center gap-3 bg-charcoal px-7 text-xs font-semibold uppercase tracking-[0.18em]"
+            className="brand-button inline-flex min-h-13 shrink-0 items-center justify-center gap-3 border border-charcoal px-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
           >
             {t("talk")} <ArrowRight className="size-4" aria-hidden="true" />
           </Link>

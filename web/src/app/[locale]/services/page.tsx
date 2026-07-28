@@ -9,6 +9,7 @@ import { fallbackServices } from "@/sanity/lib/fallbacks";
 import { safeSanityFetch } from "@/sanity/lib/live";
 import { ALL_SERVICES_QUERY } from "@/sanity/lib/queries";
 import type { Service } from "@/sanity/types";
+import { getCopy, PAGE_METADATA_COPY } from "@/lib/copy";
 
 export async function generateMetadata({
   params,
@@ -17,7 +18,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: locale === "zh" ? "住宅建造服务" : "Residential Building Services",
+    title: getCopy(PAGE_METADATA_COPY.services, locale).title,
   };
 }
 
@@ -36,12 +37,12 @@ export default async function ServicesPage({
 
   return (
     <>
-      <section className="border-b border-line py-16 sm:py-24">
+      <section className="page-intro border-b border-line py-20 sm:py-28">
         <Container>
           <SectionHeading eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
         </Container>
       </section>
-      <section className="py-16 sm:py-24">
+      <section className="bg-background py-16 sm:py-24">
         <Container>
           {services.length ? (
             <ServiceGrid services={services} locale={locale} />

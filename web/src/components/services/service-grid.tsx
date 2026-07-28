@@ -13,7 +13,7 @@ export function ServiceGrid({
   locale: Locale;
 }) {
   return (
-    <div className="grid border-l border-t border-line md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-3">
       {services.map((service, index) => {
         const Icon = icons[index % icons.length];
         const title =
@@ -22,14 +22,17 @@ export function ServiceGrid({
         return (
           <article
             key={service._id}
-            className="group flex min-h-72 flex-col border-b border-r border-line bg-surface p-7 sm:p-9"
+            className="premium-card group relative flex min-h-80 flex-col overflow-hidden p-7 sm:p-9"
           >
-            <Icon className="size-7 text-accent" strokeWidth={1.4} aria-hidden="true" />
+            <span className="absolute inset-y-0 left-0 w-0.5 bg-brand-green opacity-0 transition-opacity group-hover:opacity-100" />
+            <span className="grid size-12 place-items-center rounded-full border border-line bg-background">
+              <Icon className="size-5 text-brand-teal" strokeWidth={1.4} aria-hidden="true" />
+            </span>
             <div className="mt-auto">
               <div className="flex items-start justify-between gap-6">
                 <h3 className="display text-2xl leading-tight sm:text-3xl">{title}</h3>
                 <ArrowUpRight
-                  className="size-5 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                  className="size-5 shrink-0 text-charcoal/50 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-brand-red"
                   aria-hidden="true"
                 />
               </div>

@@ -1,19 +1,25 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { BRAND_COPY } from "@/lib/copy";
 
 export function Logo({ companyName }: { companyName: string }) {
   return (
-    <Link href="/" className="group flex items-center gap-3" aria-label={companyName}>
-      <span
-        className="grid size-9 grid-cols-2 gap-[3px] border border-current p-1.5"
-        aria-hidden="true"
-      >
-        <span className="bg-current" />
-        <span className="border border-current" />
-        <span className="border border-current" />
-        <span className="bg-current" />
+    <Link href="/" className="group flex items-center gap-3.5" aria-label={companyName}>
+      <span className="grid size-11 shrink-0 place-items-center overflow-hidden bg-white/65">
+        <Image
+          src="/images/hongwei-logo.png"
+          width={575}
+          height={545}
+          alt=""
+          className="h-full w-full object-contain saturate-[0.42] contrast-[0.92]"
+          priority
+        />
       </span>
-      <span className="max-w-40 text-[11px] font-semibold uppercase leading-4 tracking-[0.18em]">
-        {companyName}
+      <span className="leading-none">
+        <span className="display block text-[20px] tracking-[0.1em]">{BRAND_COPY.wordmark}</span>
+        <span className="mt-1.5 block text-[8px] font-medium uppercase tracking-[0.34em] opacity-50">
+          {BRAND_COPY.descriptor}
+        </span>
       </span>
     </Link>
   );

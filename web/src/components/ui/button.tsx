@@ -2,13 +2,13 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 const base =
-  "inline-flex min-h-12 items-center justify-center gap-2 px-6 text-xs font-semibold uppercase tracking-[0.18em] transition-colors";
+  "inline-flex min-h-12 items-center justify-center gap-2 border px-6 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-200";
 
 const variants = {
-  dark: "bg-charcoal text-white hover:bg-accent",
-  light: "bg-background text-charcoal hover:bg-white",
+  dark: "border-charcoal bg-charcoal text-white hover:border-brand-red hover:bg-brand-red",
+  light: "border-background bg-background text-charcoal hover:border-white hover:bg-white",
   outline:
-    "border border-charcoal text-charcoal hover:bg-charcoal hover:text-white",
+    "border-charcoal bg-transparent text-charcoal hover:bg-charcoal hover:text-white",
 };
 
 export function Button({

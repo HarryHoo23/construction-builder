@@ -12,7 +12,7 @@ export function ProjectGrid({
   viewLabel: string;
 }) {
   return (
-    <div className="grid gap-x-6 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-x-7 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
       {projects.map((project) => (
         <ProjectCard
           key={project._id}

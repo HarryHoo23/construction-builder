@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { ACCESSIBILITY_COPY } from "@/lib/copy";
 
 export function LanguageSwitcher({
   locale,
@@ -23,25 +24,30 @@ export function LanguageSwitcher({
 
   return (
     <div
-      className={cn("flex items-center gap-3 text-xs font-semibold tracking-wider", className)}
-      aria-label="Language selection"
+      className={cn("flex items-center rounded-full border border-line bg-surface p-1 text-[10px] font-semibold tracking-[0.1em]", className)}
+      aria-label={ACCESSIBILITY_COPY.languageSelection}
     >
       <button
         type="button"
         onClick={() => switchTo("en")}
-        aria-label="Switch to English"
+        aria-label={ACCESSIBILITY_COPY.switchToEnglish}
         aria-pressed={locale === "en"}
-        className={cn("py-2", locale !== "en" && "text-muted hover:text-foreground")}
+        className={cn(
+          "rounded-full px-3 py-1.5 transition-colors",
+          locale === "en" ? "bg-stone text-charcoal" : "text-muted hover:text-foreground",
+        )}
       >
         EN
       </button>
-      <span aria-hidden="true" className="h-3 w-px bg-line" />
       <button
         type="button"
         onClick={() => switchTo("zh")}
-        aria-label="切换为简体中文"
+        aria-label={ACCESSIBILITY_COPY.switchToChinese}
         aria-pressed={locale === "zh"}
-        className={cn("py-2", locale !== "zh" && "text-muted hover:text-foreground")}
+        className={cn(
+          "rounded-full px-3 py-1.5 transition-colors",
+          locale === "zh" ? "bg-stone text-charcoal" : "text-muted hover:text-foreground",
+        )}
       >
         中文
       </button>

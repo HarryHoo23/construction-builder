@@ -22,7 +22,7 @@ export function ProjectVisual({
   const alt = getLocalizedValue(image?.alt, locale) ?? title;
 
   return (
-    <div className={cn("architectural-visual relative bg-[#9a9d90]", className)}>
+    <div className={cn("architectural-visual relative bg-taupe", className)}>
       {hasImage && image ? (
         <Image
           src={urlForImage(image).width(1600).height(1100).fit("crop").url()}
@@ -30,7 +30,7 @@ export function ProjectVisual({
           fill
           priority={priority}
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="z-10 object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          className="z-10 object-cover transition-transform duration-500 hover:scale-[1.02]"
         />
       ) : (
         <span className="sr-only">{alt}</span>

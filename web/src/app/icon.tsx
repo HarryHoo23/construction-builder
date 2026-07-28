@@ -14,18 +14,29 @@ export default function Icon() {
         style={{
           width: "100%",
           height: "100%",
+          position: "relative",
           display: "flex",
-          flexWrap: "wrap",
-          gap: "4px",
-          background: "#f5f1e8",
-          padding: "8px",
-          border: "5px solid #20211f",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#F7F3EE",
+          border: "5px solid #222222",
+          color: "#222222",
+          fontFamily: "Georgia, serif",
+          fontSize: "38px",
+          fontWeight: 400,
         }}
       >
-        <div style={{ width: "19px", height: "19px", background: "#20211f" }} />
-        <div style={{ width: "19px", height: "19px", border: "3px solid #20211f" }} />
-        <div style={{ width: "19px", height: "19px", border: "3px solid #20211f" }} />
-        <div style={{ width: "19px", height: "19px", background: "#8a6b43" }} />
+        H
+        <div
+          style={{
+            position: "absolute",
+            right: "4px",
+            bottom: "4px",
+            width: "10px",
+            height: "3px",
+            background: "#B85C4B",
+          }}
+        />
       </div>
     ),
     size,

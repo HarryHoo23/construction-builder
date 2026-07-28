@@ -13,6 +13,7 @@ import { safeSanityFetch } from "@/sanity/lib/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 import type { SiteSettings } from "@/sanity/types";
 import { createContractorJsonLd } from "@/lib/structured-data";
+import { BRAND_COPY, getCopy, LOCALE_METADATA_COPY } from "@/lib/copy";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -25,16 +26,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: requested } = await params;
   const locale: Locale = requested === "zh" ? "zh" : "en";
-  const title =
-    locale === "zh" ? "墨尔本住宅建造" : "Melbourne Residential Builder";
-  const description =
-    locale === "zh"
-      ? "墨尔本双拼住宅、联排别墅、定制住宅与翻新扩建服务。"
-      : "Considered residential construction, dual occupancy and custom homes across Melbourne.";
+  const copy = getCopy(LOCALE_METADATA_COPY, locale);
 
   return {
-    title,
-    description,
+    title: copy.title,
+    description: copy.description,
     alternates: {
       canonical: `${SITE_URL}/${locale}`,
       languages: {
@@ -43,9 +39,9 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title,
-      description,
-      locale: locale === "zh" ? "zh_CN" : "en_AU",
+      title: copy.title,
+      description: copy.description,
+      locale: copy.openGraphLocale,
     },
   };
 }
@@ -75,7 +71,7 @@ export default async function LocaleLayout({
   const companyName =
     getLocalizedValue(settings.companyName, locale) ??
     getLocalizedValue(fallbackSiteSettings.companyName, locale) ??
-    "Melbourne Residential Builder";
+    BRAND_COPY.companyName;
   const serviceAreas =
     settings.serviceAreas
       ?.map((area) => getLocalizedValue(area, locale))
@@ -95,7 +91,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <div lang={locale === "zh" ? "zh-CN" : "en-AU"} className="flex min-h-screen flex-col">
+      <div lang={getCopy(LOCALE_METADATA_COPY, locale).htmlLanguage} className="flex min-h-screen flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(contractorJsonLd) }}

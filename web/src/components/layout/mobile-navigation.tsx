@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./language-switcher";
 import { NavLink } from "./nav-link";
+import { ACCESSIBILITY_COPY } from "@/lib/copy";
 
 type Labels = {
   home: string;
@@ -49,9 +50,9 @@ export function MobileNavigation({
       {open ? (
         <div
           id="mobile-navigation"
-          className="fixed inset-x-0 top-[73px] z-40 flex h-[calc(100dvh-73px)] flex-col bg-background px-5 pb-8 pt-8"
+          className="fixed inset-x-0 top-[88px] z-40 flex h-[calc(100dvh-88px)] flex-col bg-background px-5 pb-8 pt-8"
         >
-          <nav aria-label="Mobile navigation" className="flex flex-col">
+          <nav aria-label={ACCESSIBILITY_COPY.mobileNavigation} className="flex flex-col">
             {[
               ["/", labels.home],
               ["/projects", labels.projects],
@@ -77,7 +78,7 @@ export function MobileNavigation({
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="mt-auto flex min-h-14 items-center justify-center bg-charcoal px-6 text-xs font-semibold uppercase tracking-[0.18em] text-white"
+            className="brand-button mt-auto flex min-h-14 items-center justify-center border border-charcoal px-6 text-xs font-semibold uppercase tracking-[0.18em] text-white"
           >
             {labels.cta}
           </Link>

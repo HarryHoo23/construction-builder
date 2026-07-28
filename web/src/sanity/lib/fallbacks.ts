@@ -8,16 +8,16 @@ import type {
 
 export const fallbackSiteSettings: SiteSettings = {
   companyName: {
-    en: "Melbourne Residential Builder",
-    zh: "墨尔本住宅建造",
+    en: "Hongwei Construction",
+    zh: "宏伟建筑",
   },
   shortCompanyName: {
-    en: "MRB",
-    zh: "MRB",
+    en: "Hongwei",
+    zh: "宏伟",
   },
   companyDescription: {
-    en: "Considered residential construction for Melbourne homes and multi-dwelling developments.",
-    zh: "专注墨尔本住宅与多户住宅开发的用心建造。",
+    en: "Professional residential construction for Melbourne homes and multi-dwelling developments.",
+    zh: "专注墨尔本住宅与多户住宅开发的专业建造团队。",
   },
   serviceAreas: [
     { en: "Inner East", zh: "东区" },

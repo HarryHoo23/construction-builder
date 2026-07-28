@@ -24,9 +24,9 @@ export function NavLink({
       onClick={onClick}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "relative py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors hover:text-accent",
+        "relative py-3 text-[11px] font-semibold uppercase tracking-[0.17em] text-charcoal/70 transition-colors hover:text-charcoal",
         active &&
-          "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-current",
+          "text-charcoal after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-brand-red",
         className,
       )}
     >

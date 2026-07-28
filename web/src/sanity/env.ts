@@ -6,7 +6,4 @@ export const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "69j8m4rs";
 export const readToken = process.env.SANITY_API_READ_TOKEN;
 
-export const isSanityConfigured = Boolean(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID &&
-    process.env.NEXT_PUBLIC_SANITY_DATASET,
-);
+export const isSanityConfigured = Boolean(projectId && dataset);

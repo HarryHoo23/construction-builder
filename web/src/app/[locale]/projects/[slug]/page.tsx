@@ -14,6 +14,7 @@ import { isSanityConfigured } from "@/sanity/env";
 import { safeSanityFetch } from "@/sanity/lib/live";
 import { PROJECT_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import type { PortableTextBlock, ProjectDetail } from "@/sanity/types";
+import { BRAND_COPY, getCopy, PROJECT_DETAIL_COPY } from "@/lib/copy";
 
 function blocksToParagraphs(blocks: PortableTextBlock[] | undefined) {
   return (
@@ -37,12 +38,13 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
+  const copy = getCopy(PROJECT_DETAIL_COPY, locale);
   const project = await getProject(slug);
   if (!project) return {};
   const title = getLocalizedValue(project.title, locale) ?? project.title.en ?? "";
   const description =
     getLocalizedValue(project.shortDescription, locale) ??
-    `${project.suburb}, VIC residential building project.`;
+    `${project.suburb}, ${copy.metadataFallbackSuffix}`;
 
   return {
     title,
@@ -67,6 +69,7 @@ export default async function ProjectDetailPage({
   setRequestLocale(locale);
   const project = await getProject(slug);
   if (!project) notFound();
+  const copy = getCopy(PROJECT_DETAIL_COPY, locale);
 
   const t = await getTranslations("projects");
   const common = await getTranslations("common");
@@ -77,7 +80,7 @@ export default async function ProjectDetailPage({
   const address =
     project.showFullAddress && project.address
       ? project.address
-      : `${project.suburb}, VIC`;
+      : `${project.suburb}, ${BRAND_COPY.stateAbbreviation}`;
   const specifications = [
     [common("bedrooms"), project.bedrooms],
     [common("bathrooms"), project.bathrooms],
@@ -106,43 +109,53 @@ export default async function ProjectDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <section className="py-8 sm:py-12">
+      <section className="pb-6 pt-8 sm:pb-8 sm:pt-10">
         <Container>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em]"
+            className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-brand-red"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            {locale === "zh" ? "返回项目" : "Back to projects"}
+            {copy.back}
           </Link>
         </Container>
       </section>
-      <section>
-        <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-          <div className="pb-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {CATEGORY_LABELS[project.projectCategory][locale]} · {statusLabel}
-            </p>
-            <h1 className="display mt-5 text-5xl leading-[1] sm:text-7xl">{title}</h1>
-            <p className="mt-6 text-sm uppercase tracking-[0.16em] text-muted">{address}</p>
+      <section className="pb-6">
+        <Container>
+          <div className="mb-10 grid gap-7 border-t border-line pt-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
+            <div>
+              <p className="eyebrow">
+                {CATEGORY_LABELS[project.projectCategory][locale]} · {statusLabel}
+              </p>
+              <h1 className="display mt-5 max-w-4xl text-5xl leading-[0.98] sm:text-7xl lg:text-[5.25rem]">{title}</h1>
+            </div>
+            <div className="lg:text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
+                {common("location")}
+              </p>
+              <p className="mt-3 text-sm">{address}</p>
+              {project.completedYear ? (
+                <p className="mt-2 text-sm text-muted">{project.completedYear}</p>
+              ) : null}
+            </div>
           </div>
           <ProjectVisual
             image={project.coverImage}
             locale={locale}
             title={title}
             priority
-            className="aspect-[5/4]"
+            className="aspect-16/10 sm:aspect-video"
           />
         </Container>
       </section>
 
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-28">
         <Container className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-24">
-          <aside>
-            <h2 className="text-xs font-semibold uppercase tracking-[0.2em]">
+          <aside className="bg-stone p-6 sm:p-8">
+            <h2 className="eyebrow text-charcoal">
               {common("specifications")}
             </h2>
-            <dl className="mt-6 divide-y divide-line border-y border-line">
+            <dl className="mt-6 divide-y divide-charcoal/12 border-y border-charcoal/12">
               {specifications.map(([label, value]) => (
                 <div key={String(label)} className="flex justify-between gap-6 py-4 text-sm">
                   <dt className="text-muted">{label}</dt>
@@ -158,7 +171,7 @@ export default async function ProjectDetailPage({
                     href={url ?? undefined}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between border border-line bg-surface px-5 py-4 text-xs font-semibold uppercase tracking-[0.14em]"
+                    className="flex items-center justify-between border border-charcoal bg-transparent px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors hover:bg-charcoal hover:text-white"
                   >
                     {common("listing")} <ArrowUpRight className="size-4" aria-hidden="true" />
                   </a>
@@ -166,12 +179,12 @@ export default async function ProjectDetailPage({
               </div>
             ) : null}
           </aside>
-          <div>
+          <div className="lg:pt-4">
             {description.length ? (
               description.map((paragraph, index) => (
                 <p
                   key={`${paragraph}-${index}`}
-                  className="mb-6 text-lg leading-8 text-muted sm:text-xl sm:leading-9"
+                  className="mb-7 text-lg leading-8 text-muted sm:text-xl sm:leading-9"
                 >
                   {paragraph}
                 </p>
@@ -184,7 +197,7 @@ export default async function ProjectDetailPage({
             {project.designHighlights?.length ? (
               <ul className="mt-10 grid gap-3 sm:grid-cols-2">
                 {project.designHighlights.map((highlight, index) => (
-                  <li key={index} className="border-t border-line pt-4 text-sm">
+                  <li key={index} className="border-t border-line pt-5 text-sm leading-6">
                     {getLocalizedValue(highlight, locale)}
                   </li>
                 ))}
@@ -194,7 +207,7 @@ export default async function ProjectDetailPage({
         </Container>
       </section>
 
-      <section className="border-t border-line py-16 sm:py-24">
+      <section className="border-t border-line bg-stone/45 py-16 sm:py-24">
         <Container>
           <ProjectGallery
             images={project.gallery ?? []}
@@ -204,7 +217,7 @@ export default async function ProjectDetailPage({
         </Container>
       </section>
 
-      <section className="bg-charcoal py-16 text-white">
+      <section className="bg-charcoal py-16 text-[#f3ede5] sm:py-20">
         <Container className="flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-white/50">{t("related")}</p>
@@ -212,9 +225,9 @@ export default async function ProjectDetailPage({
           </div>
           <Link
             href="/contact"
-            className="inline-flex min-h-13 items-center justify-center bg-background px-7 text-xs font-semibold uppercase tracking-[0.18em] text-charcoal"
+            className="inline-flex min-h-13 items-center justify-center border border-background bg-background px-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-charcoal transition-colors hover:border-brand-red hover:bg-brand-red hover:text-white"
           >
-            {locale === "zh" ? "联系我们" : "Start a conversation"}
+            {copy.cta}
           </Link>
         </Container>
       </section>
