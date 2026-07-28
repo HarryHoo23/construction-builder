@@ -1,5 +1,9 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { CATEGORY_LABELS, PROJECT_CATEGORIES, PROJECT_STATUSES } from "@/lib/constants";
+import {
+  CATEGORY_LABELS,
+  PROJECT_CATEGORIES,
+  PROJECT_STATUSES,
+} from "../../constants";
 
 const nonNegativeNumber = (title: string) =>
   defineField({

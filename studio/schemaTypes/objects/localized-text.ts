@@ -1,20 +1,22 @@
-import { defineField, defineType } from "sanity";
+import { defineField, defineType } from 'sanity';
 
-export const localizedString = defineType({
-  name: "localizedString",
-  title: "Localized string",
+export const localizedText = defineType({
+  name: "localizedText",
+  title: "Localized text",
   type: "object",
   fields: [
     defineField({
       name: "en",
       title: "English",
-      type: "string",
+      type: "text",
+      rows: 4,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "zh",
       title: "中文",
-      type: "string",
+      type: "text",
+      rows: 4,
     }),
   ],
 });

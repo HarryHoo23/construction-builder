@@ -1,18 +1,18 @@
-"use client";
-
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
-import { apiVersion, dataset, projectId } from "./src/sanity/env";
-import { schemaTypes } from "./src/sanity/schemaTypes";
-import { structure } from "./src/sanity/structure";
+import { schemaTypes } from "./schemaTypes";
+import { structure } from "./structure";
+
+const apiVersion = "2026-07-28";
+const dataset = "production";
+const projectId = "69j8m4rs";
 
 export default defineConfig({
   name: "default",
-  title: "Builder Website",
+  title: "Builder Construction",
   projectId,
   dataset,
-  basePath: "/studio",
   plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: apiVersion })],
   schema: {
     types: schemaTypes,

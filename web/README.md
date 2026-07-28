@@ -1,13 +1,13 @@
 # Melbourne Residential Builder Website
 
-A production-ready foundation for a bilingual English / Simplified Chinese residential builder website. It uses Next.js App Router, TypeScript, Tailwind CSS, `next-intl`, Sanity Studio, typed GROQ queries and safe local fallback content.
+A production-ready foundation for a bilingual English / Simplified Chinese residential builder website. It uses Next.js App Router, TypeScript, Tailwind CSS, `next-intl`, a standalone Sanity Studio, typed GROQ queries and safe local fallback content.
 
 ## What is included
 
 - Locale-prefixed English and Chinese routes (`/en` and `/zh`)
 - Responsive, keyboard-accessible header, mobile navigation and language switcher
 - Homepage, projects, project detail, services, about and contact pages
-- Embedded Sanity Studio at `/studio`
+- Standalone Sanity Studio in the sibling `../studio` app
 - Localized Sanity field types with English fallback
 - Project, service, testimonial, page and singleton site-settings schemas
 - Typed, field-specific GROQ queries with CDN-backed published-content reads
@@ -32,13 +32,21 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
+In a second terminal:
+
+```bash
+cd ../studio
+npm install
+npm run dev
+```
+
 Open:
 
 - Website: [http://localhost:3000/en](http://localhost:3000/en)
 - Chinese website: [http://localhost:3000/zh](http://localhost:3000/zh)
-- Sanity Studio: [http://localhost:3000/studio](http://localhost:3000/studio)
+- Sanity Studio: [http://localhost:3333](http://localhost:3333)
 
-If Sanity is not configured, the public website uses safe local fallback content and `/studio` shows connection instructions.
+If Sanity is unavailable, the public website uses safe local fallback content.
 
 ## Environment variables
 
@@ -56,18 +64,17 @@ Never commit `.env.local` or a real read token.
 
 ## Connect Sanity
 
-1. Create a Sanity project at [sanity.io/manage](https://www.sanity.io/manage), or use an existing project.
-2. Copy its project ID into `NEXT_PUBLIC_SANITY_PROJECT_ID`.
-3. Create or select the `production` dataset and set `NEXT_PUBLIC_SANITY_DATASET`.
-4. Add `http://localhost:3000` to the project's CORS origins for local Studio access. Add the final production origin after deployment.
-5. Restart `npm run dev` and open `/studio`.
-6. Sign in with a Sanity account that has access to the project.
-7. Open **Site Settings** and enter the real company identity, contact details, service areas, licence and ABN where applicable.
-8. Open **Project**, create the first project, complete all required English fields and upload the cover image. Chinese fields can be added immediately or later.
-9. Review image alternative text and the **Show full address publicly** option before publishing.
-10. Click **Publish**. Published content appears on the website after the short cache interval.
+1. Use the existing Sanity project `69j8m4rs` and `production` dataset.
+2. Confirm those values in `NEXT_PUBLIC_SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_DATASET`.
+3. Add `http://localhost:3000` to the project's CORS origins. Add the final production origin after deployment.
+4. Run `npm run dev` in both `web` and `studio`, then open [http://localhost:3333](http://localhost:3333).
+5. Sign in with a Sanity account that has access to the project.
+6. Open **Site Settings** and enter the real company identity, contact details, service areas, licence and ABN where applicable.
+7. Open **Project**, create the first project, complete all required English fields and upload the cover image. Chinese fields can be added immediately or later.
+8. Review image alternative text and the **Show full address publicly** option before publishing.
+9. Click **Publish**. Published content appears on the website after the short cache interval.
 
-To invite the company owner, open the Sanity project dashboard, go to project members, invite their email address and grant an editor-appropriate role. They can then manage content at `/studio` without touching code.
+To invite the company owner, open the Sanity project dashboard, go to project members, invite their email address and grant an editor-appropriate role. They can then manage content in the standalone Studio without touching the frontend code.
 
 The singleton Studio structure always opens the document ID `siteSettings`, and duplicate/delete actions are removed for that document.
 
@@ -90,12 +97,12 @@ npm run build
 ## Deployment to Vercel
 
 1. Push the repository to GitHub.
-2. Import the `builder-website` directory as a new Vercel project.
+2. Import the `web` directory as a new Vercel project.
 3. Add the production environment variables from `.env.local.example`.
 4. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS domain.
 5. Deploy.
 6. Add the production domain to Sanity's CORS origins.
-7. Confirm `/en`, `/zh`, `/studio`, `/robots.txt` and `/sitemap.xml`.
+7. Confirm `/en`, `/zh`, `/robots.txt` and `/sitemap.xml`.
 
 Published reads use Sanity's CDN. The optional read token remains server-only.
 
@@ -105,9 +112,9 @@ Published reads use Sanity's CDN. The optional read token remains server-only.
 - `src/components`: reusable layout, project, service and UI components
 - `src/i18n`: locale routing and navigation helpers
 - `src/messages`: static English and Chinese interface strings
-- `src/sanity/schemaTypes`: modular Sanity document and object schemas
 - `src/sanity/lib`: client, image builder, fallbacks and typed queries
-- `sanity.config.ts`: embedded Studio configuration
+- `../studio/schemaTypes`: modular Sanity document and object schemas
+- `../studio/sanity.config.ts`: standalone Studio configuration
 - `proxy.ts`: locale routing for Next.js 16+
 
 Server Components are the default. Client Components are limited to mobile navigation, language switching and project filtering.
