@@ -11,6 +11,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/container";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProjectGrid } from "@/components/projects/project-grid";
 import { ServiceGrid } from "@/components/services/service-grid";
@@ -35,6 +38,7 @@ import type {
 } from "@/sanity/types";
 import { getLocalizedValue } from "@/lib/localization";
 import { BRAND_COPY, getCopy, HOME_COPY } from "@/lib/copy";
+import { cn } from "@/lib/utils";
 
 export default async function HomePage({
   params,
@@ -64,7 +68,6 @@ export default async function HomePage({
       fallback: fallbackSiteSettings,
     }),
   ]);
-
   const displayServices = services.length ? services : fallbackServices;
   const copy = getCopy(HOME_COPY, locale);
   const serviceAreas =
@@ -88,7 +91,7 @@ export default async function HomePage({
             className="object-cover object-[center_20%]"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/25 to-transparent" />
-          <Container className="relative z-10 flex h-full items-center text-[#f7f3ee]">
+          <Container className="relative z-10 flex h-full items-center text-background">
             <div className="max-w-2xl pb-4">
               <p className="display text-6xl leading-none tracking-[0.06em] lg:text-[5.6rem]">
                 {BRAND_COPY.wordmark}
@@ -103,7 +106,7 @@ export default async function HomePage({
             </div>
           </Container>
         </div>
-        <div className="relative flex h-[580px] items-end overflow-hidden px-6 pb-12 pt-20 text-[#f7f3ee] sm:h-[620px] md:hidden">
+        <div className="relative flex h-[580px] items-end overflow-hidden px-6 pb-12 pt-20 text-background sm:h-[620px] md:hidden">
           <Image
             src="/images/hongwei-hero-clean.png"
             alt=""
@@ -122,20 +125,26 @@ export default async function HomePage({
             <p className="display mt-7 max-w-sm text-5xl leading-[1.02]">{t("title")}</p>
           </div>
         </div>
-        <Container className="flex flex-col gap-4 border-t border-white/10 py-5 text-[#f7f3ee] sm:flex-row sm:items-center sm:justify-between">
+        <Container className="flex flex-col gap-4 border-t border-white/10 py-5 text-background sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[10px] uppercase tracking-[0.22em] text-white/55">
             {t("eyebrow")}
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/projects"
-              className="inline-flex min-h-11 items-center gap-3 border border-white/35 px-5 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors hover:border-white hover:bg-white hover:text-charcoal"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "border-white/35 bg-transparent text-white hover:border-white hover:bg-white hover:text-charcoal",
+              )}
             >
               {t("viewProjects")} <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex min-h-11 items-center gap-3 bg-[#f7f3ee] px-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-charcoal transition-colors hover:bg-brand-red hover:text-white"
+              className={cn(
+                buttonVariants(),
+                "bg-background text-charcoal hover:bg-brand-red hover:text-white",
+              )}
             >
               {t("talk")} <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
@@ -154,7 +163,10 @@ export default async function HomePage({
             />
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 border-b border-charcoal/35 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors hover:border-brand-red hover:text-brand-red"
+              className={cn(
+                buttonVariants({ variant: "link" }),
+                "gap-2 border-b border-charcoal/35 text-foreground no-underline hover:border-brand-red hover:text-brand-red hover:bg-accent hover:no-underline",
+              )}
             >
               {t("viewProjects")} <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
@@ -187,16 +199,18 @@ export default async function HomePage({
               intro={t("whyIntro")}
               className="lg:sticky lg:top-32 lg:self-start"
             />
-            <div className="grid border-l border-t border-line sm:grid-cols-2">
+            <div className="grid gap-px bg-line sm:grid-cols-2">
               {copy.whyChooseUs.map(({ title, body }, index) => {
                 const Icon = whyIcons[index];
                 return (
-                  <article key={title} className="border-b border-r border-line bg-surface p-7 sm:p-9">
-                    <Icon className="size-6 text-brand-teal" strokeWidth={1.35} aria-hidden="true" />
-                    <p className="mt-12 text-[10px] tracking-[0.2em] text-taupe">0{index + 1}</p>
-                    <h3 className="display mt-4 text-3xl">{title}</h3>
-                    <p className="mt-4 text-sm leading-7 text-muted">{body}</p>
-                  </article>
+                  <Card key={title} className="rounded-none border-0 py-0 ring-0">
+                    <CardContent className="p-7 sm:p-9">
+                      <Icon className="size-6 text-brand-teal" strokeWidth={1.35} aria-hidden="true" />
+                      <p className="mt-12 text-[10px] tracking-[0.2em] text-taupe">0{index + 1}</p>
+                      <CardTitle className="display mt-4 text-3xl font-normal">{title}</CardTitle>
+                      <p className="mt-4 text-sm leading-7 text-muted">{body}</p>
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>
@@ -236,7 +250,7 @@ export default async function HomePage({
       </section>
 
       {/* Our Process */}
-      <section className="process-section bg-charcoal py-20 text-[#f7f3ee] sm:py-28">
+      <section className="process-section bg-charcoal py-20 text-background sm:py-28">
         <Container>
           <SectionHeading
             eyebrow={copy.processEyebrow}
@@ -265,16 +279,23 @@ export default async function HomePage({
           {testimonials.length ? (
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               {testimonials.map((testimonial) => (
-                <blockquote key={testimonial._id} className="premium-card p-7 sm:p-9">
-                  <span className="display text-5xl leading-none text-brand-red/55">“</span>
-                  <p className="display mt-3 text-2xl leading-9">
-                    {getLocalizedValue(testimonial.quote, locale)}
-                  </p>
-                  <footer className="mt-8 border-t border-line pt-5 text-[10px] uppercase tracking-[0.16em] text-muted">
-                    {testimonial.clientName}
-                    {testimonial.clientLocation ? ` · ${testimonial.clientLocation}` : ""}
-                  </footer>
-                </blockquote>
+                <Card
+                  key={testimonial._id}
+                  className="rounded-none border border-line py-0 shadow-card ring-0"
+                >
+                  <CardContent className="p-7 sm:p-9">
+                    <blockquote>
+                      <span className="display text-5xl leading-none text-brand-red/55">“</span>
+                      <p className="display mt-3 text-2xl leading-9">
+                        {getLocalizedValue(testimonial.quote, locale)}
+                      </p>
+                      <footer className="mt-8 border-t border-line pt-5 text-[10px] uppercase tracking-[0.16em] text-muted">
+                        {testimonial.clientName}
+                        {testimonial.clientLocation ? ` · ${testimonial.clientLocation}` : ""}
+                      </footer>
+                    </blockquote>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           ) : (
@@ -304,12 +325,13 @@ export default async function HomePage({
                 ? serviceAreas
                 : copy.defaultServiceAreas
               ).map((area) => (
-                <span
+                <Badge
                   key={area}
-                  className="border border-charcoal/18 bg-background px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-charcoal/70"
+                  variant="outline"
+                  className="rounded-none border-charcoal/18 bg-background px-4 py-3 text-xs uppercase tracking-[0.14em] text-charcoal/70"
                 >
                   {area}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
@@ -328,7 +350,7 @@ export default async function HomePage({
           </div>
           <Link
             href="/contact"
-            className="brand-button inline-flex min-h-13 shrink-0 items-center justify-center gap-3 border border-charcoal px-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
+            className={cn(buttonVariants({ size: "lg" }), "shrink-0")}
           >
             {t("talk")} <ArrowRight className="size-4" aria-hidden="true" />
           </Link>

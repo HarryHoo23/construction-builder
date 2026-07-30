@@ -11,7 +11,7 @@ export function Logo({ companyName }: { companyName: string }) {
           width={575}
           height={545}
           alt=""
-          className="h-full w-full object-contain saturate-[0.42] contrast-[0.92]"
+          className="h-full w-full object-contain"
           priority
         />
       </span>

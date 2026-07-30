@@ -1,37 +1,58 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { Button as ButtonPrimitive } from "@base-ui/react/button"
+import { cva, type VariantProps } from "class-variance-authority"
 
-const base =
-  "inline-flex min-h-12 items-center justify-center gap-2 border px-6 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-200";
+import { cn } from "@/lib/utils"
 
-const variants = {
-  dark: "border-charcoal bg-charcoal text-white hover:border-brand-red hover:bg-brand-red",
-  light: "border-background bg-background text-charcoal hover:border-white hover:bg-white",
-  outline:
-    "border-charcoal bg-transparent text-charcoal hover:bg-charcoal hover:text-white",
-};
+const buttonVariants = cva(
+  "group/button inline-flex shrink-0 cursor-pointer items-center justify-center rounded-none border border-transparent bg-clip-padding text-[11px] leading-none font-semibold uppercase tracking-[0.16em] whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  {
+    variants: {
+      variant: {
+        default: "bg-foreground text-background hover:bg-primary hover:text-primary-foreground",
+        outline:
+          "border-foreground bg-transparent text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground aria-expanded:bg-accent",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/88 aria-expanded:bg-secondary",
+        ghost:
+          "hover:bg-accent hover:text-foreground aria-expanded:bg-accent",
+        destructive:
+          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+        link: "h-auto p-0 text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default:
+          "h-11 gap-2 px-5 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
+        xs: "h-6 gap-1 rounded-radius-md px-2 text-xs in-data-[slot=button-group]:rounded-radius-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-7 gap-1 rounded-radius-md px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-radius-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-13 gap-3 px-7 has-data-[icon=inline-end]:pr-6 has-data-[icon=inline-start]:pl-6",
+        icon: "size-11",
+        "icon-xs":
+          "size-6 rounded-radius-md in-data-[slot=button-group]:rounded-radius-lg [&_svg:not([class*='size-'])]:size-3",
+        "icon-sm":
+          "size-7 rounded-radius-md in-data-[slot=button-group]:rounded-radius-lg",
+        "icon-lg": "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
 
-export function Button({
+function Button({
   className,
-  variant = "dark",
+  variant = "default",
+  size = "default",
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: keyof typeof variants;
-}) {
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
-    <button
-      className={cn(base, variants[variant], className)}
+    <ButtonPrimitive
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
-  );
+  )
 }
 
-export function ButtonLink({
-  className,
-  variant = "dark",
-  ...props
-}: AnchorHTMLAttributes<HTMLAnchorElement> & {
-  variant?: keyof typeof variants;
-}) {
-  return <a className={cn(base, variants[variant], className)} {...props} />;
-}
+export { Button, buttonVariants }

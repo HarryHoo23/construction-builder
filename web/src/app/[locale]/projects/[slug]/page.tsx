@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { CATEGORY_LABELS, SITE_URL } from "@/lib/constants";
 import { getLocalizedValue } from "@/lib/localization";
 import { Container } from "@/components/ui/container";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { ProjectVisual } from "@/components/projects/project-visual";
 import { ProjectGallery } from "@/components/projects/project-gallery";
 import { getFallbackProject } from "@/sanity/lib/fallbacks";
@@ -15,6 +17,7 @@ import { safeSanityFetch } from "@/sanity/lib/live";
 import { PROJECT_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import type { PortableTextBlock, ProjectDetail } from "@/sanity/types";
 import { BRAND_COPY, getCopy, PROJECT_DETAIL_COPY } from "@/lib/copy";
+import { cn } from "@/lib/utils";
 
 function blocksToParagraphs(blocks: PortableTextBlock[] | undefined) {
   return (
@@ -113,7 +116,10 @@ export default async function ProjectDetailPage({
         <Container>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted transition-colors hover:text-brand-red"
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              "gap-2 text-muted no-underline hover:text-brand-red hover:no-underline",
+            )}
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
             {copy.back}
@@ -143,6 +149,8 @@ export default async function ProjectDetailPage({
             image={project.coverImage}
             locale={locale}
             title={title}
+            location={address}
+            imageNumber={1}
             priority
             className="aspect-16/10 sm:aspect-video"
           />
@@ -151,10 +159,11 @@ export default async function ProjectDetailPage({
 
       <section className="py-16 sm:py-28">
         <Container className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-24">
-          <aside className="bg-stone p-6 sm:p-8">
-            <h2 className="eyebrow text-charcoal">
+          <Card className="h-fit rounded-none border-0 bg-stone py-0 ring-0">
+            <CardContent className="p-6 sm:p-8">
+            <CardTitle className="eyebrow text-charcoal">
               {common("specifications")}
-            </h2>
+            </CardTitle>
             <dl className="mt-6 divide-y divide-charcoal/12 border-y border-charcoal/12">
               {specifications.map(([label, value]) => (
                 <div key={String(label)} className="flex justify-between gap-6 py-4 text-sm">
@@ -171,14 +180,18 @@ export default async function ProjectDetailPage({
                     href={url ?? undefined}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between border border-charcoal bg-transparent px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors hover:bg-charcoal hover:text-white"
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "h-auto w-full justify-between px-5 py-4",
+                    )}
                   >
                     {common("listing")} <ArrowUpRight className="size-4" aria-hidden="true" />
                   </a>
                 ))}
               </div>
             ) : null}
-          </aside>
+            </CardContent>
+          </Card>
           <div className="lg:pt-4">
             {description.length ? (
               description.map((paragraph, index) => (
@@ -213,11 +226,12 @@ export default async function ProjectDetailPage({
             images={project.gallery ?? []}
             locale={locale}
             title={title}
+            location={address}
           />
         </Container>
       </section>
 
-      <section className="bg-charcoal py-16 text-[#f3ede5] sm:py-20">
+      <section className="bg-charcoal py-16 text-background sm:py-20">
         <Container className="flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-white/50">{t("related")}</p>
@@ -225,7 +239,10 @@ export default async function ProjectDetailPage({
           </div>
           <Link
             href="/contact"
-            className="inline-flex min-h-13 items-center justify-center border border-background bg-background px-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-charcoal transition-colors hover:border-brand-red hover:bg-brand-red hover:text-white"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "border-background bg-background text-charcoal hover:border-brand-red hover:bg-brand-red hover:text-white",
+            )}
           >
             {copy.cta}
           </Link>

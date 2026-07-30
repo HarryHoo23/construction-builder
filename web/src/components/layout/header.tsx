@@ -1,6 +1,8 @@
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/container";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { NavLink } from "./nav-link";
 import { LanguageSwitcher } from "./language-switcher";
@@ -29,7 +31,7 @@ export function Header({
 }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-background/94 backdrop-blur-xl">
-      <Container className="flex h-[88px] items-center justify-between gap-6">
+      <Container className="flex h-header items-center justify-between gap-6">
         <Logo companyName={companyName} />
         <nav aria-label={ACCESSIBILITY_COPY.primaryNavigation} className="hidden items-center gap-7 lg:flex">
           <NavLink href="/">{labels.home}</NavLink>
@@ -42,7 +44,7 @@ export function Header({
           <LanguageSwitcher locale={locale} />
           <Link
             href="/contact"
-            className="brand-button inline-flex min-h-11 items-center border border-charcoal px-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white"
+            className={cn(buttonVariants(), "h-11")}
           >
             {labels.cta}
           </Link>

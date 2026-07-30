@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { Bebas_Neue } from "next/font/google";
+import { Bebas_Neue, Geist } from "next/font/google";
 import { BRAND_COPY, ROOT_METADATA_COPY } from "@/lib/copy";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -44,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} h-full scroll-smooth`}>
+    <html lang="en" className={cn("h-full", "scroll-smooth", bebasNeue.variable, "font-sans", geist.variable)}>
       <body className="min-h-full antialiased">{children}</body>
     </html>
   );

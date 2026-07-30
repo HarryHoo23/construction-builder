@@ -9,9 +9,9 @@ export const projectImage = defineType({
     defineField({
       name: "alt",
       title: "Alternative text",
-      description: "Describe the image for visitors using screen readers.",
+      description:
+        "Optional. If left blank, the website uses the project name, location and image number.",
       type: "localizedString",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "caption",

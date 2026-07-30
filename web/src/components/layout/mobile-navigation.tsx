@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
 import { NavLink } from "./nav-link";
 import { ACCESSIBILITY_COPY } from "@/lib/copy";
@@ -28,30 +37,31 @@ export function MobileNavigation({
 }) {
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   return (
     <div className="lg:hidden">
-      <button
-        type="button"
-        className="grid size-11 place-items-center"
-        aria-label={open ? labels.close : labels.menu}
-        aria-expanded={open}
-        aria-controls="mobile-navigation"
-        onClick={() => setOpen((value) => !value)}
-      >
-        {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-      </button>
-      {open ? (
-        <div
-          id="mobile-navigation"
-          className="fixed inset-x-0 top-[88px] z-40 flex h-[calc(100dvh-88px)] flex-col bg-background px-5 pb-8 pt-8"
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={labels.menu}
+            />
+          }
         >
+          <Menu aria-hidden="true" />
+        </SheetTrigger>
+        <SheetContent
+          id="mobile-navigation"
+          side="right"
+          aria-label={labels.menu}
+          className="w-full max-w-none rounded-none border-line bg-background px-5 pb-8 pt-20 shadow-2xl sm:max-w-sm"
+        >
+          <SheetTitle className="sr-only">{labels.menu}</SheetTitle>
+          <SheetDescription className="sr-only">
+            {ACCESSIBILITY_COPY.mobileNavigation}
+          </SheetDescription>
           <nav aria-label={ACCESSIBILITY_COPY.mobileNavigation} className="flex flex-col">
             {[
               ["/", labels.home],
@@ -78,12 +88,12 @@ export function MobileNavigation({
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="brand-button mt-auto flex min-h-14 items-center justify-center border border-charcoal px-6 text-xs font-semibold uppercase tracking-[0.18em] text-white"
+            className={cn(buttonVariants({ size: "lg" }), "mt-auto")}
           >
             {labels.cta}
           </Link>
-        </div>
-      ) : null}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

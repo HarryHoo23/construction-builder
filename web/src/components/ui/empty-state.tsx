@@ -1,4 +1,5 @@
 import { Building2 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 
 export function EmptyState({
   title,
@@ -8,10 +9,14 @@ export function EmptyState({
   body: string;
 }) {
   return (
-    <div className="border border-line bg-surface px-6 py-20 text-center">
-      <Building2 className="mx-auto mb-5 size-8 text-brand-teal" strokeWidth={1.4} aria-hidden="true" />
-      <h3 className="display text-2xl">{title}</h3>
-      <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted">{body}</p>
-    </div>
+    <Card className="rounded-none border border-line bg-card py-0 text-center ring-0">
+      <CardContent className="px-6 py-20">
+        <Building2 className="mx-auto mb-5 size-8 text-brand-teal" strokeWidth={1.4} aria-hidden="true" />
+        <CardTitle className="display text-2xl font-normal">{title}</CardTitle>
+        <CardDescription className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted">
+          {body}
+        </CardDescription>
+      </CardContent>
+    </Card>
   );
 }

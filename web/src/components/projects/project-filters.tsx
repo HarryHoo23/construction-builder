@@ -5,6 +5,13 @@ import type { Locale } from "@/i18n/routing";
 import { CATEGORY_LABELS, PROJECT_CATEGORIES } from "@/lib/constants";
 import type { ProjectSummary, ProjectStatus } from "@/sanity/types";
 import { EmptyState } from "@/components/ui/empty-state";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ProjectGrid } from "./project-grid";
 import { PROJECT_STATUS_COPY } from "@/lib/copy";
 
@@ -50,35 +57,55 @@ export function ProjectFilters({
   return (
     <div>
       <div className="mb-12 flex flex-col gap-4 border border-line bg-surface p-4 sm:flex-row sm:p-5">
-        <label className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
-          {labels.category}
-          <select
+        <div className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
+          <span>{labels.category}</span>
+          <Select
             value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className="min-h-11 flex-1 border-l border-line bg-transparent px-4 text-sm font-normal normal-case tracking-normal outline-none focus:border-brand-teal"
+            onValueChange={(value) => value && setCategory(value)}
           >
-            <option value="all">{labels.all}</option>
-            {PROJECT_CATEGORIES.map((value) => (
-              <option key={value} value={value}>
-                {CATEGORY_LABELS[value][locale]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
-          {labels.status}
-          <select
+            <SelectTrigger
+              aria-label={labels.category}
+              className="h-12 flex-1 rounded-none border-line bg-surface px-4 text-sm font-normal normal-case tracking-normal hover:border-secondary/70"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent
+              align="start"
+              className="rounded-none border border-line shadow-dropdown ring-0"
+            >
+              <SelectItem value="all" className="rounded-none">{labels.all}</SelectItem>
+              {PROJECT_CATEGORIES.map((value) => (
+                <SelectItem key={value} value={value} className="rounded-none">
+                  {CATEGORY_LABELS[value][locale]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
+          <span>{labels.status}</span>
+          <Select
             value={status}
-            onChange={(event) => setStatus(event.target.value)}
-            className="min-h-11 flex-1 border-l border-line bg-transparent px-4 text-sm font-normal normal-case tracking-normal outline-none focus:border-brand-teal"
+            onValueChange={(value) => value && setStatus(value)}
           >
-            {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            <SelectTrigger
+              aria-label={labels.status}
+              className="h-12 flex-1 rounded-none border-line bg-surface px-4 text-sm font-normal normal-case tracking-normal hover:border-secondary/70"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent
+              align="start"
+              className="rounded-none border border-line shadow-dropdown ring-0"
+            >
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value} className="rounded-none">
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       {filtered.length ? (
         <ProjectGrid projects={filtered} locale={locale} viewLabel={labels.view} />

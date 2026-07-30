@@ -35,7 +35,7 @@ export function Footer({
   abn?: string;
 }) {
   return (
-    <footer className="relative overflow-hidden bg-charcoal py-14 text-[#f3ede5] sm:py-20">
+    <footer className="relative overflow-hidden bg-charcoal py-14 text-background sm:py-20">
       <Container>
         <div className="grid gap-12 border-b border-white/12 pb-14 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">

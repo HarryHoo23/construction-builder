@@ -4,8 +4,11 @@ import { ArrowRight } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/container";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ABOUT_PAGE_COPY, getCopy } from "@/lib/copy";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -55,18 +58,20 @@ export default async function AboutPage({
       <section className="bg-background py-20 sm:py-28">
         <Container>
           <SectionHeading title={t("principles")} />
-          <div className="mt-12 grid border-l border-t border-line md:grid-cols-3">
+          <div className="mt-12 grid gap-px bg-line md:grid-cols-3">
             {principles.map(([title, body], index) => (
-              <article key={title} className="border-b border-r border-line bg-surface p-8">
-                <span className="text-xs tracking-[0.18em] text-brand-teal">0{index + 1}</span>
-                <h2 className="display mt-14 text-3xl">{title}</h2>
-                <p className="mt-4 text-sm leading-7 text-muted">{body}</p>
-              </article>
+              <Card key={title} className="rounded-none border-0 py-0 ring-0">
+                <CardContent className="p-8">
+                  <span className="text-xs tracking-[0.18em] text-brand-teal">0{index + 1}</span>
+                  <CardTitle className="display mt-14 text-3xl font-normal">{title}</CardTitle>
+                  <p className="mt-4 text-sm leading-7 text-muted">{body}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
           <Link
             href="/contact"
-            className="brand-button mt-12 inline-flex min-h-13 items-center gap-3 border border-charcoal px-7 text-xs font-semibold uppercase tracking-[0.18em] text-white"
+            className={cn(buttonVariants({ size: "lg" }), "mt-12")}
           >
             {copy.cta}
             <ArrowRight className="size-4" aria-hidden="true" />
