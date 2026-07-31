@@ -37,12 +37,12 @@ export default async function ServicesPage({
 
   return (
     <>
-      <section className="page-intro border-b border-line py-20 sm:py-28">
+      <section className="page-intro border-b border-line py-14 sm:py-20 lg:py-28">
         <Container>
           <SectionHeading eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
         </Container>
       </section>
-      <section className="bg-background py-16 sm:py-24">
+      <section className="bg-background py-12 sm:py-24">
         <Container>
           {services.length ? (
             <ServiceGrid services={services} locale={locale} />

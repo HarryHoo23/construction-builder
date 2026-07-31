@@ -46,7 +46,7 @@ export default async function ProjectsPage({
 
   return (
     <>
-      <section className="page-intro border-b border-line py-20 sm:py-28">
+      <section className="page-intro border-b border-line py-14 sm:py-20 lg:py-28">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
             <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
@@ -56,7 +56,7 @@ export default async function ProjectsPage({
           </div>
         </Container>
       </section>
-      <section className="bg-background py-14 sm:py-20">
+      <section className="bg-background py-12 sm:py-20">
         <Container>
           <ProjectFilters
             projects={projects}

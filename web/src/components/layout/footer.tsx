@@ -65,14 +65,18 @@ export function Footer({
             </h2>
             <div className="mt-5 space-y-3 text-sm">
               {phone ? <p><a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a></p> : null}
-              {email ? <p><a href={`mailto:${email}`}>{email}</a></p> : null}
+              {email ? <p className="min-w-0"><a className="break-all" href={`mailto:${email}`}>{email}</a></p> : null}
             </div>
-            <h2 className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
-              {labels.serviceAreas}
-            </h2>
-            <p className="mt-4 text-sm leading-6 text-white/70">
-              {serviceAreas.join(" · ")}
-            </p>
+            {serviceAreas.length ? (
+              <>
+                <h2 className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+                  {labels.serviceAreas}
+                </h2>
+                <p className="mt-4 text-sm leading-6 text-white/70">
+                  {serviceAreas.join(" · ")}
+                </p>
+              </>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col gap-3 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">

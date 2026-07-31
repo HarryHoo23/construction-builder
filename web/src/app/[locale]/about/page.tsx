@@ -37,14 +37,14 @@ export default async function AboutPage({
 
   return (
     <>
-      <section className="page-intro py-20 sm:py-28">
+      <section className="page-intro py-14 sm:py-20 lg:py-28">
         <Container>
           <SectionHeading eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
         </Container>
       </section>
       <section>
         <Container className="grid min-h-[520px] lg:grid-cols-2">
-          <div className="architectural-visual min-h-96" />
+          <div className="architectural-visual min-h-72 sm:min-h-96" />
           <div className="flex flex-col justify-center bg-charcoal p-8 text-white sm:p-14">
             <p className="eyebrow text-brand-green">
               {copy.visualEyebrow}
@@ -55,7 +55,7 @@ export default async function AboutPage({
           </div>
         </Container>
       </section>
-      <section className="bg-background py-20 sm:py-28">
+      <section className="bg-background py-16 sm:py-28">
         <Container>
           <SectionHeading title={t("principles")} />
           <div className="mt-12 grid gap-px bg-line md:grid-cols-3">
@@ -71,7 +71,7 @@ export default async function AboutPage({
           </div>
           <Link
             href="/contact"
-            className={cn(buttonVariants({ size: "lg" }), "mt-12")}
+            className={cn(buttonVariants({ size: "lg" }), "mt-12 w-full sm:w-auto")}
           >
             {copy.cta}
             <ArrowRight className="size-4" aria-hidden="true" />

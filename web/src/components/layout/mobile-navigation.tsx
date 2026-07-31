@@ -56,7 +56,7 @@ export function MobileNavigation({
           id="mobile-navigation"
           side="right"
           aria-label={labels.menu}
-          className="w-full max-w-none rounded-none border-line bg-background px-5 pb-8 pt-20 shadow-2xl sm:max-w-sm"
+          className="w-full max-w-none overflow-y-auto overscroll-contain rounded-none border-line bg-background px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-20 shadow-2xl data-[side=right]:w-full sm:max-w-sm sm:data-[side=right]:w-3/4"
         >
           <SheetTitle className="sr-only">{labels.menu}</SheetTitle>
           <SheetDescription className="sr-only">
@@ -88,7 +88,7 @@ export function MobileNavigation({
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className={cn(buttonVariants({ size: "lg" }), "mt-auto")}
+            className={cn(buttonVariants({ size: "lg" }), "mt-auto w-full")}
           >
             {labels.cta}
           </Link>

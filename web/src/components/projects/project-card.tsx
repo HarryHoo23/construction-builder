@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CATEGORY_LABELS } from "@/lib/constants";
@@ -22,10 +23,12 @@ export function ProjectCard({
   project,
   locale,
   viewLabel,
+  revealIndex,
 }: {
   project: ProjectSummary;
   locale: Locale;
   viewLabel: string;
+  revealIndex?: number;
 }) {
   const title = getLocalizedValue(project.title, locale) ?? project.title.en ?? "";
   const category = CATEGORY_LABELS[project.projectCategory][locale];
@@ -35,8 +38,18 @@ export function ProjectCard({
       : `${project.suburb}, ${BRAND_COPY.stateAbbreviation}`;
 
   return (
-    <Card className="group gap-0 overflow-hidden rounded-none border border-line py-0 shadow-card ring-0 transition-all duration-200 hover:-translate-y-0.5 hover:border-muted hover:shadow-card-hover">
-      <Link href={`/projects/${project.slug}`}>
+    <Card
+      data-home-reveal={revealIndex === undefined ? undefined : "card"}
+      style={
+        revealIndex === undefined
+          ? undefined
+          : ({
+              "--reveal-delay": `${Math.min(revealIndex, 5) * 80}ms`,
+            } as CSSProperties)
+      }
+      className="group gap-0 overflow-hidden rounded-none border border-line py-0 shadow-card ring-0 transition-all duration-200 hover:-translate-y-0.5 hover:border-muted hover:shadow-card-hover"
+    >
+      <Link href={`/projects/${project.slug}`} className="block min-w-0">
         <ProjectVisual
           image={project.coverImage}
           locale={locale}
@@ -46,13 +59,13 @@ export function ProjectCard({
           className="aspect-project grayscale-[0.08]"
         />
         <CardContent className="bg-card p-5 sm:p-6">
-          <div className="flex items-start justify-between gap-5">
-            <div>
-              <Badge variant="outline" className="rounded-none border-primary/30 bg-primary/5 text-[10px] uppercase tracking-[0.14em] text-primary">
+          <div className="flex min-w-0 items-start justify-between gap-4 sm:gap-5">
+            <div className="min-w-0">
+              <Badge variant="outline" className="h-auto max-w-full whitespace-normal rounded-none border-primary/30 bg-primary/5 py-1.5 text-left text-[10px] leading-4 uppercase tracking-[0.12em] text-primary sm:tracking-[0.14em]">
                 {category} · {statusLabel(project.status, locale)}
               </Badge>
-              <CardTitle className="display mt-3 text-[1.75rem] font-normal leading-tight">{title}</CardTitle>
-              <CardDescription className="mt-2 text-sm text-muted">
+              <CardTitle className="display mt-3 break-words text-[1.75rem] font-normal leading-tight">{title}</CardTitle>
+              <CardDescription className="mt-2 break-words text-sm leading-6 text-muted">
                 {location}
                 {project.completedYear ? ` · ${project.completedYear}` : ""}
               </CardDescription>

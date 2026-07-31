@@ -6,6 +6,8 @@ export const EMAIL_PATTERN = String.raw`[^\s@]+@[^\s@]+\.[^\s@]{2,}`;
 export const AU_PHONE_PATTERN =
   String.raw`(?:\+?61(?:\s|-)?\(?[2-478]\)?|\(?0[2-478]\)?)(?:(?:\s|-)?\d){8}`;
 
+export const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
+
 export const PROJECT_CATEGORIES = [
   "dual-occupancy",
   "three-townhouses",

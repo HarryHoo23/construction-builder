@@ -133,13 +133,13 @@ export default async function ProjectDetailPage({
               <p className="eyebrow">
                 {CATEGORY_LABELS[project.projectCategory][locale]} · {statusLabel}
               </p>
-              <h1 className="display mt-5 max-w-4xl text-5xl leading-[0.98] sm:text-7xl lg:text-[5.25rem]">{title}</h1>
+              <h1 className="display mt-5 max-w-4xl break-words text-[2.75rem] leading-[0.98] min-[360px]:text-5xl sm:text-7xl lg:text-[5.25rem]">{title}</h1>
             </div>
             <div className="lg:text-right">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
                 {common("location")}
               </p>
-              <p className="mt-3 text-sm">{address}</p>
+              <p className="mt-3 break-words text-sm">{address}</p>
               {project.completedYear ? (
                 <p className="mt-2 text-sm text-muted">{project.completedYear}</p>
               ) : null}
@@ -166,9 +166,9 @@ export default async function ProjectDetailPage({
             </CardTitle>
             <dl className="mt-6 divide-y divide-charcoal/12 border-y border-charcoal/12">
               {specifications.map(([label, value]) => (
-                <div key={String(label)} className="flex justify-between gap-6 py-4 text-sm">
+                <div key={String(label)} className="flex min-w-0 justify-between gap-6 py-4 text-sm">
                   <dt className="text-muted">{label}</dt>
-                  <dd className="font-semibold">{value}</dd>
+                  <dd className="min-w-0 break-words text-right font-semibold">{value}</dd>
                 </div>
               ))}
             </dl>
@@ -241,7 +241,7 @@ export default async function ProjectDetailPage({
             href="/contact"
             className={cn(
               buttonVariants({ size: "lg" }),
-              "border-background bg-background text-charcoal hover:border-brand-red hover:bg-brand-red hover:text-white",
+              "w-full border-background bg-background text-charcoal hover:border-brand-red hover:bg-brand-red hover:text-white sm:w-auto",
             )}
           >
             {copy.cta}

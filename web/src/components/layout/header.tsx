@@ -31,20 +31,20 @@ export function Header({
 }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-background/94 backdrop-blur-xl">
-      <Container className="flex h-header items-center justify-between gap-6">
+      <Container className="flex h-20 items-center justify-between gap-3 sm:h-header sm:gap-6">
         <Logo companyName={companyName} />
-        <nav aria-label={ACCESSIBILITY_COPY.primaryNavigation} className="hidden items-center gap-7 lg:flex">
+        <nav aria-label={ACCESSIBILITY_COPY.primaryNavigation} className="hidden items-center gap-5 lg:flex xl:gap-7">
           <NavLink href="/">{labels.home}</NavLink>
           <NavLink href="/projects">{labels.projects}</NavLink>
           <NavLink href="/services">{labels.services}</NavLink>
           <NavLink href="/about">{labels.about}</NavLink>
           <NavLink href="/contact">{labels.contact}</NavLink>
         </nav>
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex xl:gap-6">
           <LanguageSwitcher locale={locale} />
           <Link
             href="/contact"
-            className={cn(buttonVariants(), "h-11")}
+            className={cn(buttonVariants(), "h-11 px-4 xl:px-5")}
           >
             {labels.cta}
           </Link>

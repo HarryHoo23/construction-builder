@@ -4,27 +4,12 @@ import { Mail, Phone } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { ContactForm } from "@/components/contact/contact-form";
 import { fallbackSiteSettings } from "@/sanity/lib/fallbacks";
 import { safeSanityFetch } from "@/sanity/lib/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 import type { SiteSettings } from "@/sanity/types";
-import {
-  AU_PHONE_PATTERN,
-  CATEGORY_LABELS,
-  EMAIL_PATTERN,
-  PROJECT_CATEGORIES,
-} from "@/lib/constants";
+import { TURNSTILE_TEST_SITE_KEY } from "@/lib/constants";
 import { BRAND_COPY, CONTACT_PAGE_COPY, getCopy } from "@/lib/copy";
 
 export async function generateMetadata({
@@ -35,11 +20,6 @@ export async function generateMetadata({
   const { locale } = await params;
   return { title: getCopy(CONTACT_PAGE_COPY, locale).metadataTitle };
 }
-
-const fieldClass =
-  "mt-2 min-h-13 w-full rounded-none border-line bg-surface px-4 text-base shadow-none focus-visible:border-secondary focus-visible:ring-secondary/15";
-const validatedFieldClass =
-  `${fieldClass} user-invalid:border-destructive user-invalid:ring-destructive/15`;
 
 export default async function ContactPage({
   params,
@@ -54,10 +34,15 @@ export default async function ContactPage({
     query: SITE_SETTINGS_QUERY,
     fallback: fallbackSiteSettings,
   });
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ??
+    (process.env.NODE_ENV === "development"
+      ? TURNSTILE_TEST_SITE_KEY
+      : "");
 
   return (
     <>
-      <section className="page-intro border-b border-line py-20 sm:py-28">
+      <section className="page-intro border-b border-line py-14 sm:py-20 lg:py-28">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
@@ -67,89 +52,43 @@ export default async function ContactPage({
           </div>
         </Container>
       </section>
-      <section className="bg-background py-16 sm:py-24">
+      <section className="bg-background py-12 sm:py-24">
         <Container className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
-          <form className="grid gap-6 border border-line bg-surface p-6 sm:grid-cols-2 sm:p-9 lg:p-12" aria-describedby="form-notice">
-            <Label className="block text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              {t("name")}
-              <Input className={fieldClass} type="text" name="name" autoComplete="name" />
-            </Label>
-            <Label className="block text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              {t("email")}
-              <Input
-                className={validatedFieldClass}
-                type="email"
-                name="email"
-                autoComplete="email"
-                inputMode="email"
-                pattern={EMAIL_PATTERN}
-                title={t("emailFormat")}
-              />
-            </Label>
-            <Label className="block text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              {t("phone")}
-              <Input
-                className={validatedFieldClass}
-                type="tel"
-                name="phone"
-                autoComplete="tel"
-                inputMode="tel"
-                pattern={AU_PHONE_PATTERN}
-                title={t("phoneFormat")}
-              />
-            </Label>
-            <div className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              <span>{t("language")}</span>
-              <Select name="preferredLanguage" defaultValue={locale}>
-                <SelectTrigger aria-label={t("language")} className={fieldClass}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="rounded-none border-line ring-0">
-                  <SelectItem value="en" className="rounded-none">{t("english")}</SelectItem>
-                  <SelectItem value="zh" className="rounded-none">{t("chinese")}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              <span>{t("projectType")}</span>
-              <Select name="projectType">
-                <SelectTrigger aria-label={t("projectType")} className={fieldClass}>
-                  <SelectValue placeholder={CONTACT_PAGE_COPY.emptySelect} />
-                </SelectTrigger>
-                <SelectContent className="rounded-none border-line ring-0">
-                  {PROJECT_CATEGORIES.map((category) => (
-                    <SelectItem key={category} value={category} className="rounded-none">
-                      {CATEGORY_LABELS[category][locale]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Label className="block text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-              {t("suburb")}
-              <Input className={fieldClass} type="text" name="suburb" />
-            </Label>
-            <Label className="block text-xs font-semibold uppercase tracking-[0.12em] text-muted sm:col-span-2">
-              {t("message")}
-              <Textarea className={`${fieldClass} min-h-40 py-3`} name="message" rows={6} />
-            </Label>
-            <div className="sm:col-span-2">
-              <Button
-                type="button"
-                aria-disabled="true"
-                disabled
-                size="lg"
-              >
-                {t("send")}
-              </Button>
-              <p id="form-notice" className="mt-4 max-w-xl text-sm leading-6 text-muted">
-                {t("notice")}
-              </p>
-              {/* TODO: Connect this form to Resend through a validated Server Action or Route Handler. */}
-            </div>
-          </form>
+          <ContactForm
+            locale={locale}
+            turnstileSiteKey={turnstileSiteKey}
+            labels={{
+              name: t("name"),
+              email: t("email"),
+              emailFormat: t("emailFormat"),
+              phone: t("phone"),
+              phoneFormat: t("phoneFormat"),
+              language: t("language"),
+              projectType: t("projectType"),
+              suburb: t("suburb"),
+              message: t("message"),
+              english: t("english"),
+              chinese: t("chinese"),
+              emptySelect: CONTACT_PAGE_COPY.emptySelect,
+              send: t("send"),
+              sending: t("sending"),
+              notice: t("notice"),
+              success: t("success"),
+              validationError: t("validationError"),
+              turnstileError: t("turnstileError"),
+              rateLimitError: t("rateLimitError"),
+              sendError: t("sendError"),
+              configurationError: t("configurationError"),
+              nameError: t("nameError"),
+              emailError: t("emailError"),
+              phoneError: t("phoneError"),
+              projectTypeError: t("projectTypeError"),
+              suburbError: t("suburbError"),
+              messageError: t("messageError"),
+            }}
+          />
 
-          <aside className="flex flex-col justify-between bg-charcoal p-7 text-background sm:p-10">
+          <aside className="flex min-w-0 flex-col justify-between bg-charcoal p-6 text-background sm:p-10">
             <div>
               <p className="eyebrow text-brand-green">{BRAND_COPY.companyName}</p>
               <h2 className="display mt-5 text-4xl">
@@ -159,7 +98,7 @@ export default async function ContactPage({
                 {settings.phone ? (
                   <a
                     href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                    className="flex items-center gap-4 text-sm transition-colors hover:text-brand-green"
+                    className="flex min-w-0 items-center gap-4 text-sm transition-colors hover:text-brand-green"
                   >
                     <Phone className="size-5 text-brand-teal" aria-hidden="true" />
                     {settings.phone}
@@ -173,7 +112,7 @@ export default async function ContactPage({
                 {settings.email ? (
                   <a
                     href={`mailto:${settings.email}`}
-                    className="flex items-center gap-4 text-sm transition-colors hover:text-brand-green"
+                    className="flex min-w-0 items-center gap-4 break-all text-sm transition-colors hover:text-brand-green"
                   >
                     <Mail className="size-5 text-brand-teal" aria-hidden="true" />
                     {settings.email}

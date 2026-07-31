@@ -1,10 +1,21 @@
 import { z } from "zod";
-import { PROJECT_CATEGORIES } from "./constants";
+import {
+  AU_PHONE_PATTERN,
+  EMAIL_PATTERN,
+  PROJECT_CATEGORIES,
+} from "./constants";
+
+const emailRegex = new RegExp(`^(?:${EMAIL_PATTERN})$`);
+const phoneRegex = new RegExp(`^(?:${AU_PHONE_PATTERN})$`);
 
 export const contactEnquirySchema = z.object({
   name: z.string().trim().min(2).max(120),
-  email: z.email(),
-  phone: z.string().trim().max(30).optional(),
+  email: z.string().trim().max(254).regex(emailRegex),
+  phone: z
+    .string()
+    .trim()
+    .max(30)
+    .refine((value) => value === "" || phoneRegex.test(value)),
   preferredLanguage: z.enum(["en", "zh"]),
   projectType: z.enum(PROJECT_CATEGORIES),
   suburb: z.string().trim().min(2).max(120),

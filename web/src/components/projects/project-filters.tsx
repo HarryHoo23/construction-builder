@@ -57,7 +57,7 @@ export function ProjectFilters({
   return (
     <div>
       <div className="mb-12 flex flex-col gap-4 border border-line bg-surface p-4 sm:flex-row sm:p-5">
-        <div className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
+        <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 text-xs font-semibold uppercase tracking-[0.16em] sm:flex-row sm:items-center sm:gap-4">
           <span>{labels.category}</span>
           <Select
             value={category}
@@ -82,7 +82,7 @@ export function ProjectFilters({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-1 items-center gap-4 text-xs font-semibold uppercase tracking-[0.16em]">
+        <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 text-xs font-semibold uppercase tracking-[0.16em] sm:flex-row sm:items-center sm:gap-4">
           <span>{labels.status}</span>
           <Select
             value={status}
